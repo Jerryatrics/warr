@@ -12,7 +12,23 @@ module.exports = async (req, res) => {
     return res.status(405).json({ success: false, message: 'Method not allowed' });
   }
 
-  const { date, time, cuisine } = req.body || {};
+  // Ensure we have a parsed JSON body (Vercel sometimes leaves raw body)
+  let body = req.body;
+  if (!body) {
+    try {
+      body = await new Promise((resolve, reject) => {
+        let data = '';
+        req.on('data', chunk => { data += chunk; });
+        req.on('end', () => {
+          try { resolve(data ? JSON.parse(data) : {}); } catch (e) { resolve({}); }
+        });
+        req.on('error', err => reject(err));
+      });
+    } catch (e) {
+      body = {};
+    }
+  }
+  const { date, time, cuisine } = body || {};
   if (!date || !time || !cuisine) {
     return res.status(400).json({ success: false, message: 'Missing fields' });
   }
