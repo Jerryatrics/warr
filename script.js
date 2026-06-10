@@ -8,8 +8,21 @@ document.addEventListener("DOMContentLoaded", function() {
     const moveRandom = document.querySelector("#move-random");
     
     if (moveRandom) {
+        const triggerMove = (target) => moveRandomEl(target instanceof Event ? target.target : target);
+
         moveRandom.addEventListener("mouseenter", function(e) {
-            moveRandomEl(e.target);
+            triggerMove(e);
+        });
+
+        moveRandom.addEventListener("click", function(e) {
+            triggerMove(e);
+        });
+
+        moveRandom.addEventListener("keydown", function(e) {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                e.preventDefault();
+                moveRandomEl(moveRandom);
+            }
         });
     }
 });
