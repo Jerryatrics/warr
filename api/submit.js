@@ -12,6 +12,13 @@ module.exports = async (req, res) => {
     return res.status(405).json({ success: false, message: 'Method not allowed' });
   }
 
+  // Debug: log headers and raw body (trimmed)
+  try {
+    console.log('headers:', Object.keys(req.headers).reduce((o, k) => (o[k]=req.headers[k], o), {}));
+    console.log('raw body type:', typeof req.body);
+    if (req.body && typeof req.body !== 'object') console.log('raw body (string):', String(req.body).slice(0,500));
+  } catch (e) { console.error('debug log error', e && e.message); }
+
   // Ensure we have a parsed JSON body (Vercel sometimes leaves raw body)
   let body = req.body;
   if (!body) {
