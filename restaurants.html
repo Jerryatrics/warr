@@ -85,9 +85,9 @@
                     const cuisine = cuisines[idx] || 'Unknown';
 
                     try {
-                        // Replace the placeholder below with your deployed serverless endpoint.
+                        // Use localhost for local testing, or replace with your deployed Vercel endpoint.
                         // Example: 'https://your-app.vercel.app/api/submit'
-                        const SERVERLESS_ENDPOINT = 'https://<your-deployment>.vercel.app/api/submit';
+                        const SERVERLESS_ENDPOINT = 'http://localhost:3000/api/submit';
 
                         const resp = await fetch(SERVERLESS_ENDPOINT, {
                             method: 'POST',

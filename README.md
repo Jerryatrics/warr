@@ -63,3 +63,4 @@ vercel dev
 ```
 
 This will run the function locally so you can test `restaurants.html` with the serverless endpoint.
+

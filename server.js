@@ -14,10 +14,15 @@ app.use((req, res, next) => {
   next();
 });
 
-const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1514065518343225384/OSKSaa_QfeTmmn93KLO1LcisbTjYbemDyNsyKBf3vp4kXB3dSEQl4wmGAijs6KqZIPtN';
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
-app.post('/api/submit-date-cuisine', async (req, res) => {
+app.post('/api/submit', async (req, res) => {
   const { date, time, cuisine } = req.body;
+
+  if (!DISCORD_WEBHOOK_URL) {
+    console.error('Missing DISCORD_WEBHOOK_URL environment variable.');
+    return res.status(500).json({ success: false, message: 'Server not configured' });
+  }
 
   if (!date || !time || !cuisine) {
     return res.status(400).json({ success: false, message: 'Missing fields' });

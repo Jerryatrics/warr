@@ -1,0 +1,29 @@
+const axios = require('axios');
+
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  }
+
+  const { date, time, cuisine } = req.body || {};
+  if (!date || !time || !cuisine) {
+    return res.status(400).json({ success: false, message: 'Missing fields' });
+  }
+
+  const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+  if (!DISCORD_WEBHOOK_URL) {
+    console.error('Missing DISCORD_WEBHOOK_URL env var');
+    return res.status(500).json({ success: false, message: 'Server not configured' });
+  }
+
+  const content = `🎉 New Reservation!\n**Date:** ${date}\n**Time:** ${time}\n**Cuisine:** ${cuisine}`;
+
+  try {
+    await axios.post(DISCORD_WEBHOOK_URL, { content });
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Error sending to Discord webhook:', err.message || err);
+    return res.status(500).json({ success: false, message: 'Failed to send to Discord' });
+  }
+};
