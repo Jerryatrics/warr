@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pick a Date</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .date-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .date-input-wrapper {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .date-input-wrapper label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .date-input-wrapper input[type="date"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .date-input-wrapper input[type="date"]:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .date-input-wrapper input[type="date"]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style the date picker calendar */
+        .date-input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        .time-input-wrapper {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .time-input-wrapper label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .time-input-wrapper input[type="time"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .time-input-wrapper input[type="time"]:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .time-input-wrapper input[type="time"]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .date-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-continue {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #ffffff;
+        }
+
+        .btn-continue:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-continue:disabled:hover {
+            transform: none;
+        }
+    </style>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <h1>📅 When?</h1>
+            <p class="subtitle">Pick a date and time for your date</p>
+
+            <div class="date-container">
+                <div class="date-input-wrapper">
+                    <label for="dateInput">Select Date</label>
+                    <input 
+                        type="date" 
+                        id="dateInput" 
+                        min="" 
+                        required
+                    >
+                </div>
+
+                <div class="time-input-wrapper">
+                    <label for="timeInput">Select Time</label>
+                    <input 
+                        type="time" 
+                        id="timeInput" 
+                        required
+                    >
+                </div>
+
+                <div class="date-actions">
+                    <a class="btn btn-yes" href="yes.html">← Back</a>
+                    <button 
+                        class="btn btn-continue" 
+                        id="continueBtn"
+                        onclick="continueToDinner()"
+                    >
+                        Continue →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set minimum date to today
+        const dateInput = document.getElementById('dateInput');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+
+        // Handle continue button
+        function continueToDinner() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+
+            if (!date || !time) {
+                alert('Please select both date and time!');
+                return;
+            }
+
+            // Store the selected date and time in localStorage (optional)
+            localStorage.setItem('selectedDate', date);
+            localStorage.setItem('selectedTime', time);
+
+            // Navigate to restaurants page
+            window.location.href = 'restaurants.html';
+        }
+
+        // Enable/disable continue button based on input
+        document.getElementById('dateInput').addEventListener('change', checkInputs);
+        document.getElementById('timeInput').addEventListener('change', checkInputs);
+
+        function checkInputs() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const continueBtn = document.getElementById('continueBtn');
+            continueBtn.disabled = !date || !time;
+        }
+
+        // Initial check
+        checkInputs();
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Cuisine</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <h1>Where should we go?</h1>
+            <p class="subtitle">Pick a cuisine</p>
+
+            <div class="restaurants-grid">
+                <div class="restaurant-card">
+                    <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop" alt="Japanese Cuisine" class="restaurant-image">
+                    <h3>🍜 Japanese Cuisine</h3>
+                    
+                    <a class="btn btn-restaurant" href="#">Select</a>
+                </div>
+                
+                <div class="restaurant-card">
+                    <img src="https://images.unsplash.com/photo-1609501676725-7186f017a4b0?w=400&h=300&fit=crop" alt="Chinese" class="restaurant-image">
+                    <h3>🥡 Chinese</h3>
+                    
+                    <a class="btn btn-restaurant" href="#">Select</a>
+                </div>
+                
+                <div class="restaurant-card">
+                    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=300&fit=crop" alt="Italian" class="restaurant-image">
+                    <h3>🍝 Italian</h3>
+                    
+                    <a class="btn btn-restaurant" href="#">Select</a>
+                </div>
+                
+                <div class="restaurant-card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Steak House" class="restaurant-image">
+                    <h3>🥩 Steak House</h3>
+                    
+                    <a class="btn btn-restaurant" href="#">Select</a>
+                </div>
+                
+                <div class="restaurant-card">
+                    <img src="https://images.unsplash.com/photo-1544139014-8ac3676ae498?w=400&h=300&fit=crop" alt="Mediterranean" class="restaurant-image">
+                    <h3>🫒 Mediterranean</h3>
+                    
+                    <a class="btn btn-restaurant" href="#">Select</a>
+                </div>
+                
+                <div class="restaurant-card">
+                    <img src="https://images.unsplash.com/photo-1585238341710-4b4e6b2693b6?w=400&h=300&fit=crop" alt="Korean" class="restaurant-image">
+                    <h3>🌶️ Korean</h3>
+                    
+                    <a class="btn btn-restaurant" href="#">Select</a>
+                </div>
+            </div>
+
+            <div style="margin-top:24px; display:flex; gap:12px;">
+                <a class="btn btn-yes" href="yes.html">Back</a>
+                <a class="btn btn-no" href="index.html">Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.btn-restaurant');
+            const cuisines = ['Japanese', 'Chinese', 'Italian', 'Steak House', 'Mediterranean', 'Korean'];
+
+            buttons.forEach((btn, idx) => {
+                btn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+
+                    const date = localStorage.getItem('selectedDate');
+                    const time = localStorage.getItem('selectedTime');
+
+                    if (!date || !time) {
+                        alert('Please select a date and time first.');
+                        window.location.href = 'date.html';
+                        return;
+                    }
+
+                    const cuisine = cuisines[idx] || 'Unknown';
+
+                    try {
+                        // Replace the placeholder below with your deployed serverless endpoint.
+                        // Example: 'https://your-app.vercel.app/api/submit'
+                        const SERVERLESS_ENDPOINT = 'https://<your-deployment>.vercel.app/api/submit';
+
+                        const resp = await fetch(SERVERLESS_ENDPOINT, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ date, time, cuisine })
+                        });
+
+                        const data = await resp.json();
+                        if (data && data.success) {
+                            alert('✅ Reservation sent! Check your Discord.');
+                            // Optionally clear stored selection
+                            // localStorage.removeItem('selectedDate');
+                            // localStorage.removeItem('selectedTime');
+                            window.location.href = 'index.html';
+                        } else {
+                            alert('Failed to send reservation: ' + (data.message || 'unknown'));
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Error sending reservation. Is the server running?');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
