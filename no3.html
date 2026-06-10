@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="page">
+    <div class="container page">
         <div class="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4a9Zv4_okS9UkYnUYLh5WYK67jOW0Wxe_QA&s" alt="angry Cat">
+            <img class="hero-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4a9Zv4_okS9UkYnUYLh5WYK67jOW0Wxe_QA&s" alt="angry Cat">
             <h1>Last Chance!</h1>
+            <p class="subtitle">One more chance to say yes or keep the surprise alive.</p>
         
        
-            <a class="btn btn-yes" href="yes.html">Yes</a>
+            <div class="actions">
+                <a class="btn btn-yes" href="yes.html">Yes</a>
         
         
             <button class="btn btn-no" id="move-random" type="button" aria-label="No">No</button>
+            </div>
         </div>
     </div>
     <script src="./script.js"></script>
